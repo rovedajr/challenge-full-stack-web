@@ -213,9 +213,8 @@ import Student from '../services/students'
 
       editItem (item) {
         this.editedIndex = this.alunos.indexOf(item)
-        const {ra, cpf, nome, email} = item
+
         this.editedItem = Object.assign({}, item)
-        console.log(ra, cpf, nome, email);
         this.dialog = true
       },
 
@@ -225,7 +224,6 @@ import Student from '../services/students'
         console.log(ra)
         Student.erase(ra)
         this.listar()
-        // this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
@@ -255,6 +253,9 @@ import Student from '../services/students'
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.alunos[this.editedIndex], this.editedItem)
+        const {ra} = this.editedItem
+        Student.update(this.editedItem,ra)
+
         } else {
           Student.save(this.editedItem).then(()=>{
             this.close()
@@ -263,7 +264,7 @@ import Student from '../services/students'
           }).catch(error =>{
             this.warning = error.response.data.message
           })
-        }
+        } this.close()
       },
     },
   }

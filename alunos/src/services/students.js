@@ -10,8 +10,8 @@ export default {
         return http.post('/api/student', student)
     },
 
-    update: (student) => {
-        return http.patch('/api/student/:ra', student)
+    update: (student, ra) => {
+        return http.patch(`/api/student/${ra}`, student)
     },
 
     erase: (ra) => {
