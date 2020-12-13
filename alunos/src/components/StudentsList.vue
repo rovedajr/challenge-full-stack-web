@@ -17,12 +17,12 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="primary"
-              dark
+              depressed
               class="mb-2"
               v-bind="attrs"
               v-on="on"
             >
-              New Item
+              Novo Aluno
             </v-btn>
           </template>
           <v-card>
@@ -53,6 +53,8 @@
                       label="email"
                     ></v-text-field>
                   </v-col>
+                  </v-row>
+                  <v-row>
                   <v-col
                     cols="12"
                     sm="6"
@@ -78,20 +80,19 @@
             </v-card-text>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
               <v-btn
-                color="blue darken-1"
-                text
+                color="primary"
+                depressed
                 @click="close"
               >
-                Cancel
+                Cancelar
               </v-btn>
               <v-btn
-                color="blue darken-1"
-                text
+                color="primary"
+                depressed
                 @click="save"
               >
-                Save
+                Salvar
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -101,8 +102,8 @@
             <v-card-title class="headline">Você tem certeza de que quer excluir esse registro?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="accent" depressed @click="closeDelete">Cancelar</v-btn>
+              <v-btn color="accent" depressed @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -160,27 +161,25 @@ import Student from '../services/students'
       editedIndex: -1,
       editedItem: {
         nome: '',
-        email: 0,
-        ra: 0,
-        cpf: 0,
+        email: '',
+        ra: '',
+        cpf: '',
       },
       defaultItem: {
         nome: '',
-        email: 0,
-        ra: 0,
-        cpf: 0,
+        email: '',
+        ra: '',
+        cpf: '',
       },
     }),
 
      mounted() {
-    Student.list().then(res => {
-      this.alunos = res.data;
-    })
+       this.listar()
   },
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        return this.editedIndex === -1 ? 'Novo aluno' : 'Editar aluno'
       },
     },
 
@@ -199,10 +198,14 @@ import Student from '../services/students'
 
     methods: {
       initialize () {
-
         this.alunos = [
-          
         ]
+      },
+
+      listar(){
+      Student.list().then(res => {
+            this.alunos = res.data;
+          })
       },
 
       editItem (item) {
@@ -242,9 +245,13 @@ import Student from '../services/students'
         if (this.editedIndex > -1) {
           Object.assign(this.alunos[this.editedIndex], this.editedItem)
         } else {
-          this.alunos.push(this.editedItem)
+          Student.save(this.editedItem).then(()=>{
+            this.close()
+            this.listar()
+          }).catch(error =>{
+            console.log(error)
+          })
         }
-        this.close()
       },
     },
   }
