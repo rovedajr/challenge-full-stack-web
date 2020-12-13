@@ -72,6 +72,7 @@
                     md="4"
                   >
                     <v-text-field
+                    :readonly="editedIndex > -1"
                       v-model="editedItem.cpf"
                       label="CPF"
                     ></v-text-field>
