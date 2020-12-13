@@ -31,6 +31,7 @@
             </v-card-title>
 
             <v-card-text>
+              {{warning}}
               <v-container>
                 <v-row>
                   <v-col
@@ -84,6 +85,7 @@
                 color="primary"
                 depressed
                 @click="close"
+
               >
                 Cancelar
               </v-btn>
@@ -171,6 +173,7 @@ import Student from '../services/students'
         ra: '',
         cpf: '',
       },
+      warning: "",
     }),
 
      mounted() {
@@ -210,13 +213,19 @@ import Student from '../services/students'
 
       editItem (item) {
         this.editedIndex = this.alunos.indexOf(item)
+        const {ra, cpf, nome, email} = item
         this.editedItem = Object.assign({}, item)
+        console.log(ra, cpf, nome, email);
         this.dialog = true
       },
 
       deleteItem (item) {
         this.editedIndex = this.alunos.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        const {ra} = item
+        console.log(ra)
+        Student.erase(ra)
+        this.listar()
+        // this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
@@ -230,6 +239,7 @@ import Student from '../services/students'
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
+          this.warning = ""
         })
       },
 
@@ -238,6 +248,7 @@ import Student from '../services/students'
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
+          this.warning = ""
         })
       },
 
@@ -247,9 +258,10 @@ import Student from '../services/students'
         } else {
           Student.save(this.editedItem).then(()=>{
             this.close()
+            this.warning = ""
             this.listar()
           }).catch(error =>{
-            console.log(error)
+            this.warning = error.response.data.message
           })
         }
       },

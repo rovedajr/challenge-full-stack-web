@@ -8,6 +8,14 @@ export default {
 
     save: (student) => {
         return http.post('/api/student', student)
+    },
+
+    update: (student) => {
+        return http.patch('/api/student/:ra', student)
+    },
+
+    erase: (ra) => {
+        return http.delete(`/api/student/${ra}`, { data: ra })
     }
 }
 
