@@ -2,6 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="alunos"
+    :search="search"
     class="elevation-1"
   >
     <template v-slot:top>
@@ -9,6 +10,12 @@
         flat
       >
         <v-toolbar-title>Alunos</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          label="Buscar Aluno"
+          class="mt-4"
+        ></v-text-field>
         <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
@@ -148,6 +155,7 @@ import Student from '../services/students'
     data: () => ({
       dialog: false,
       dialogDelete: false,
+      search:'',
       headers: [
         {
           text: 'Nome',
