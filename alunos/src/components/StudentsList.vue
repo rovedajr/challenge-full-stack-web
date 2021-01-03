@@ -176,6 +176,7 @@ import Student from '../services/students'
         ra: '',
         cpf: '',
       },
+      tempRa: '',
       defaultItem: {
         nome: '',
         email: '',
@@ -222,22 +223,20 @@ import Student from '../services/students'
 
       editItem (item) {
         this.editedIndex = this.alunos.indexOf(item)
-
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
         this.editedIndex = this.alunos.indexOf(item)
-        const {ra} = item
+        const ra = item.ra
         console.log(ra)
-        Student.erase(ra)
-        this.listar()
+        this.tempRa = ra
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.alunos.splice(this.editedIndex, 1)
+        Student.erase(this.tempRa)
         this.closeDelete()
       },
 
@@ -256,6 +255,8 @@ import Student from '../services/students'
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
           this.warning = ""
+          this.listar()
+    
         })
       },
 
