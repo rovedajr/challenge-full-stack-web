@@ -236,7 +236,9 @@ import Student from '../services/students'
       },
 
       deleteItemConfirm () {
-        Student.erase(this.tempRa)
+        Student.erase(this.tempRa).then(()=>{
+          this.listar()
+        })
         this.closeDelete()
       },
 
@@ -255,7 +257,6 @@ import Student from '../services/students'
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
           this.warning = ""
-          this.listar()
     
         })
       },
