@@ -1,6 +1,10 @@
 Comments
 ===================
 
+##  Release 1.1
+Resolve uma implementação errada do método *delete* que permitia a exclusão do registro sem confirmação. 
+
+
 # Importante
 Antes de tudo, no terminal:
 
